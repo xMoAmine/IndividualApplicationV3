@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+
+//Wrapping the layout into /layout to make it available with data binding. -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Data om XML met databinding mogelijk te maken.
+         Dit doen we met de ViewModel zodat we de LiveData kunnen gebruiken-->
+    <data>
+
+        <variable
+            name="sleepTrackerViewModel"
+            type="com.example.individualapplication.sleepTracker.SleepTrackerViewModel" />
+    </data>
+
+    <!-- Start van de fragment layout met ConstraintLayout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".sleeptracker.SleepTrackerFragment">
+
+        <!-- simpele manier om data en text op een scrollable manier te displayen-->
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/clear_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stop_button">
+
+            <!-- In de textview kunnen we de nightString in de gaten houden.
+             Elke keer als de LiveData veranderd dan zie je dat terug.-->
+
+            <TextView
+                android:id="@+id/textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin"
+                android:layout_marginTop="@dimen/margin"
+                android:layout_marginEnd="@dimen/margin"
+                android:text="@{sleepTrackerViewModel.nightsString}" />
+        </ScrollView>
+
+        <!-- Met data binding en Live Data kunnen we de visibility state van de buttons
+             in de gaten houden. E.g. wanneer je op start klikt dan is de button () aka empty.
+             Hier begint de button met tracken (lambda output pattern set to tracking)
+             totdat je de stop button inklikt.-->
+
+        <Button
+            android:id="@+id/start_button"
+            style="@style/SleepButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:enabled="@{sleepTrackerViewModel.startButtonVisible}"
+            android:onClick="@{() -> sleepTrackerViewModel.onStartTracking()}"
+            android:text="@string/start"
+            app:layout_constraintBaseline_toBaselineOf="@id/stop_button"
+            app:layout_constraintEnd_toStartOf="@+id/stop_button"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/stop_button"
+            style="@style/SleepButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:enabled="@{sleepTrackerViewModel.stopButtonVisible}"
+            android:onClick="@{() -> sleepTrackerViewModel.onStopTracking()}"
+            android:text="@string/stop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/start_button"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/clear_button"
+            style="@style/SleepButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:layout_marginBottom="@dimen/margin"
+            android:enabled="@{sleepTrackerViewModel.clearButtonVisible}"
+            android:onClick="@{() -> sleepTrackerViewModel.onClear()}"
+            android:text="@string/clear"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

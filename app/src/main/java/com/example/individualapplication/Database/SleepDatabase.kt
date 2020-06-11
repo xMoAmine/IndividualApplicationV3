@@ -17,7 +17,7 @@ abstract class SleepDatabase : RoomDatabase (){
      * connects de database met de DAO
      */
 
-    abstract val SleepDatabaseDao : SleepDatabaseDao
+    abstract val sleepDatabaseDao : SleepDatabaseDao
 
     /**
      * je maakt hier een companion object aan, hierdoor kun je functies toevoegen aan de SleepDatabase Class.
